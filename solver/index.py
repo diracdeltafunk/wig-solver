@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 import solver
+import os
 
 app = Flask(__name__)
 
@@ -15,4 +16,4 @@ def run_solver():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=int(os.environ.get("PORT", 5000)))
