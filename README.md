@@ -1,3 +1,3 @@
-## wig-solver
+# wig-solver
 
-wig-solver is an API which finds optimal solutions to [whenisgood](https://whenisgood.net) scheduling problems.
+wig-solver is an API designed to work with its [companion chrome extension](https://github.com/diracdeltafunk/wig-solver-chrome), which finds optimal solutions to [Whenisgood](https://whenisgood.net) scheduling problems.
