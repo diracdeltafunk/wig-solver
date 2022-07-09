@@ -19,8 +19,8 @@ def run_solver():
 
 @app.route("/health")
 def return_ok():
-    return '', 200
+    return "ok", 200
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")))
