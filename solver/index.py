@@ -17,5 +17,10 @@ def run_solver():
     return jsonify(solver.solveStrict({k: set(v) for d in request.get_json() for (k, v) in d.items()}))
 
 
+@app.route("/health")
+def return_ok():
+    return '', 200
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
