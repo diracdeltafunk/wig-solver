@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-import solver
+import solver.solver
 import os
 
 app = Flask(__name__)
@@ -14,7 +14,7 @@ def hello_world():
 
 @app.route("/solve", methods=['POST'])
 def run_solver():
-    return jsonify(solver.solveStrict({k: set(v) for d in request.get_json() for (k, v) in d.items()}))
+    return jsonify(solver.solver.solveStrict({k: set(v) for d in request.get_json() for (k, v) in d.items()}))
 
 
 @app.route("/health")
