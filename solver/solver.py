@@ -5,8 +5,8 @@ from itertools import chain
 import numpy as np
 
 
-def onehot(n, i, value=1):
-    return ([0] * i) + [value] + ([0] * (n-i-1))
+def onehot(n, i, value_on=1, value_off=0):
+    return ([value_off] * i) + [value_on] + ([value_off] * (n-i-1))
 
 # Standard set-cover solve. Find a minimum collection of sets which cover the universe.
 
@@ -59,10 +59,9 @@ def solveRelaxed(sets, k):
     # unless it is forgotten, and the number of forgotten elements is
     # at most k
     A = np.array([[1 if e in s else 0 for s in sets.values()] + onehot(num_elems, i)
-                  for (i, e) in enumerate(universe)] + [([0] * num_sets) + ([1] * num_elems)])
-    b_l = np.append(np.ones(num_elems), 0)
+                  for (i, e) in enumerate(universe)] + [([0] * num_sets) + ([-1] * num_elems)])
+    b_l = np.append(np.ones(num_elems), -k)
     b_u = np.full_like(b_l, np.inf)
-    b_u[-1] = k
     solution = milp(c=c, integrality=integrality, bounds=[
                     l, u], constraints=[A, b_l, b_u])
     if not solution.success:
@@ -85,7 +84,7 @@ def solveTranspose(sets, k):
     # We also give a slight penalty to using a set, so that we never use more sets
     # than necessary. This penalty is small enough that it'll be worth it to use all the sets
     # if it allows one more element to be covered.
-    c = np.concatenate([np.reciprocal(np.full(num_sets, num_sets+1)),
+    c = np.concatenate([np.full(num_sets, 1/(num_sets+1)),
                        np.full(num_elems, -1)])
     # All variables are binary integers
     integrality = np.ones_like(c)
@@ -95,15 +94,15 @@ def solveTranspose(sets, k):
     # and the number of used sets is at most k.
     preA = [[onehot(num_sets, i, -1) + onehot(num_elems, j) for (i, s) in enumerate(
         sets.values()) if e in s] + [[1 if e in s else 0 for s in sets.values()] + onehot(num_elems, j, -1)] for (j, e) in enumerate(universe)]
-    A = np.array([row for rows in preA for row in rows] +
-                 [([1] * num_sets) + ([0] * num_elems)])
+    A = np.array([x for xs in preA for x in xs] +
+                 [([-1] * num_sets) + ([0] * num_elems)])
     preb_l = [[0 for s in sets.values() if e in s] + [0] for e in universe]
-    b_l = np.array([entry for entries in preb_l for entry in entries] + [0])
+    b_l = np.array([x for xs in preb_l for x in xs] + [-k], dtype=float)
     b_u = np.full_like(b_l, np.inf)
-    b_u[-1] = k
     solution = milp(c=c, integrality=integrality, bounds=[
                     l, u], constraints=[A, b_l, b_u])
     if not solution.success:
+        print(solution.message)
         return None
     solution = solution.x
     ids_to_use = [k for (i, k) in enumerate(sets.keys()) if solution[i] == 1]
