@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, redirect
 from jsonschema import ValidationError, validate
 from flask_cors import CORS
 import solver.solver
@@ -66,7 +66,7 @@ schema = {
 
 @ app.route("/")
 def hello_world():
-    return "Hello, World! Here I'll advertise the chrome extension."
+    return redirect("https://www.wig-solver.app", code=302)
 
 
 @ app.route("/solve", methods=['POST'])
