@@ -4,6 +4,8 @@ from scipy.optimize import milp
 from itertools import chain
 import numpy as np
 
+# Utility function
+
 
 def onehot(n, i, value_on=1, value_off=0):
     return ([value_off] * i) + [value_on] + ([value_off] * (n-i-1))

@@ -5,8 +5,8 @@ name = "pypi"
 
 [packages]
 flask = "*"
-scipy = "==1.9.0rc2"
 flask-cors = "*"
+scipy = "==1.9.0rc2"
 
 [dev-packages]
 
