@@ -1,1 +1,1 @@
-web: flask run -h "0.0.0.0" -p "$PORT"
+web: gunicorn -w 4 -b "0.0.0.0:$PORT" solver.index:app
