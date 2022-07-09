@@ -40,7 +40,7 @@ def solveStrict(sets):
 # Relaxed set-cover solve. Find a minimum collection of sets which cover the universe, except at most k elements.
 
 
-def solveRelaxed(sets, k):
+def solveRelaxed(sets, k=0):
     num_sets = len(sets.keys())
     # universe is the union of the sets
     universe = set(chain(*sets.values()))
@@ -75,7 +75,7 @@ def solveRelaxed(sets, k):
 # Transposed solver. Find at most k sets which cover the maximum number of elements.
 
 
-def solveTranspose(sets, k):
+def solveTranspose(sets, k=0):
     num_sets = len(sets.keys())
     # universe is the union of the sets
     universe = set(chain(*sets.values()))
