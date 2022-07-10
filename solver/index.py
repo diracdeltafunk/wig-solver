@@ -74,8 +74,8 @@ def run_solver():
     data = request.get_json()
     try:
         validate(data, schema)
-    except ValidationError:
-        return "Invalid data", 400
+    except ValidationError as e:
+        return "Invalid data: " + e.message, 400
     dictionary = {k: set(v) for d in data["sets"] for (k, v) in d.items()}
     if "method" not in data or data["method"] == "strict":
         # Run strict solve
